@@ -132,7 +132,7 @@ void main() {
                 Get.to(
                   () => OnboardingPage(),
                   transition: Transition.rightToLeft,
-                  duration: const Duration(seconds: 1),
+                  duration: const Duration(milliseconds: 100),
                 );
               },
               child: const Text(

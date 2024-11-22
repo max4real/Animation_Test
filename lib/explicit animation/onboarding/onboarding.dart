@@ -1,3 +1,4 @@
+import 'package:animation_test/explicit%20animation/onboarding/w_custom_button.dart';
 import 'package:animation_test/explicit%20animation/onboarding/w_description.dart';
 import 'package:animation_test/explicit%20animation/onboarding/w_image.dart';
 import 'package:animation_test/explicit%20animation/onboarding/w_title.dart';
@@ -13,27 +14,9 @@ class OnboardingPage extends StatefulWidget {
 
 class _OnboardingPageState extends State<OnboardingPage> {
   int _currentIndex = 0;
-  final double _dotSize = 10;
+  final double _dotSize = 13;
 
   final List<Map<String, dynamic>> _onboardingData = [
-    {
-      "image": "assets/d02b1bab0b0edc1e86853ab6aacd9a60.png",
-      "title": "Set Your Bus Alarm",
-      "description":
-          "Choose your destination and set an alarm to notify you when your stop is approaching. Never worry about missing your stop again!",
-    },
-    {
-      "image": "assets/07066d706a4136eb22c19a3d609d32ef.png",
-      "title": "Explore Bus Routes",
-      "description":
-          "Easily browse through available bus routes and stops. Find your way around the city and plan your journey with ease",
-    },
-    {
-      "image": "assets/63c4cf697ad9d1e9c93aeab8b3560592.png",
-      "title": "Title",
-      "description":
-          "Hello how are you my name is blah blah blah blah blah blah",
-    },
     {
       "image": "assets/d02b1bab0b0edc1e86853ab6aacd9a60.png",
       "title": "Set Your Bus Alarm",
@@ -74,11 +57,19 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   void _nextPage() {
     setState(() {
-      if (_currentIndex < _onboardingData.length - 1) {
-        _currentIndex++;
-      } else {
-        _currentIndex = 0;
-      }
+      _currentIndex++;
+    });
+  }
+
+  void _previousPage() {
+    setState(() {
+      _currentIndex--;
+    });
+  }
+
+  void _movePage(int index) {
+    setState(() {
+      _currentIndex = index;
     });
   }
 
@@ -89,7 +80,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -113,56 +103,51 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     descriptionKey: ValueKey(currentData["description"]),
                     description: currentData["description"]!,
                   ),
+                  const SizedBox(height: 30),
+                  if (_currentIndex == _onboardingData.length - 1)
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0XFF2F7EF0),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 100),
+                        child: const Text(
+                          "Get Started",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 20),
-          if (_currentIndex == _onboardingData.length - 1)
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color(0XFF2F7EF0),
-                  borderRadius: BorderRadius.circular(15),
+          const Spacer(),
+          Row(
+            children: [
+              if (_currentIndex > 0)
+                CustomButton(
+                  onPressed: () {
+                    _previousPage();
+                  },
+                  icon: Icons.arrow_back,
                 ),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 100),
-                child: const Text(
-                  "Get Started",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                  ),
+              const Spacer(),
+              if (_currentIndex != _onboardingData.length - 1)
+                CustomButton(
+                  onPressed: () {
+                    _nextPage();
+                  },
+                  icon: Icons.arrow_forward,
                 ),
-              ),
-            ),
-          const SizedBox(height: 20),
-          if (_currentIndex != _onboardingData.length - 1)
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: const Color(0XFF2F7EF0).withOpacity(0.6),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      _nextPage();
-                    },
-                    icon: const Icon(
-                      Icons.double_arrow_sharp,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            ],
+          ),
           // custon indicator 1
           // Positioned(
           //   bottom: 80,
@@ -188,6 +173,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           //   ),
           // ),
           // custon indicator 2
+          const SizedBox(height: 20),
           SizedBox(
             width: _dotSize * _onboardingData.length * 2,
             child: Stack(
@@ -197,15 +183,23 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
                     _onboardingData.length,
-                    (index) => Container(
-                      width: _dotSize,
-                      height: _dotSize,
-                      margin: EdgeInsets.symmetric(horizontal: _dotSize / 2),
-                      decoration: const BoxDecoration(
-                        color: Colors.grey,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
+                    (index) {
+                      return GestureDetector(
+                        onTap: () {
+                          _movePage(index);
+                        },
+                        child: Container(
+                          width: _dotSize,
+                          height: _dotSize,
+                          margin:
+                              EdgeInsets.symmetric(horizontal: _dotSize / 2),
+                          decoration: const BoxDecoration(
+                            color: Colors.grey,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 AnimatedPositioned(
@@ -222,7 +216,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 ),
               ],
             ),
-          )
+          ),
+          const SizedBox(height: 20),
         ],
       ),
     );
