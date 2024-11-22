@@ -14,7 +14,7 @@ class OnboardingPage extends StatefulWidget {
 
 class _OnboardingPageState extends State<OnboardingPage> {
   int _currentIndex = 0;
-  final double _dotSize = 13;
+  final double _dotSize = 10;
 
   final List<Map<String, dynamic>> _onboardingData = [
     {
@@ -131,41 +131,29 @@ class _OnboardingPageState extends State<OnboardingPage> {
           const Spacer(),
           Row(
             children: [
-              AnimatedSlide(
-                duration: const Duration(milliseconds: 300),
+              CustomButton(
+                onPressed: () {
+                  if (_currentIndex > 0) {
+                    _previousPage();
+                  }
+                },
+                icon: Icons.arrow_back,
                 offset: _currentIndex > 0 ? Offset.zero : const Offset(-0.5, 0),
-                child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: _currentIndex > 0 ? 1.0 : 0.0,
-                  child: CustomButton(
-                    onPressed: () {
-                      if (_currentIndex > 0) {
-                        _previousPage();
-                      }
-                    },
-                    icon: Icons.arrow_back,
-                  ),
-                ),
+                opacity: _currentIndex > 0 ? 1.0 : 0.0,
               ),
               const Spacer(),
-              AnimatedSlide(
-                duration: const Duration(milliseconds: 300),
+              CustomButton(
+                onPressed: () {
+                  if (_currentIndex != _onboardingData.length - 1) {
+                    _nextPage();
+                  }
+                },
+                icon: Icons.arrow_forward,
                 offset: _currentIndex != _onboardingData.length - 1
                     ? Offset.zero
                     : const Offset(0.5, 0),
-                child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity:
-                      _currentIndex != _onboardingData.length - 1 ? 1.0 : 0.0,
-                  child: CustomButton(
-                    onPressed: () {
-                      if (_currentIndex != _onboardingData.length - 1) {
-                        _nextPage();
-                      }
-                    },
-                    icon: Icons.arrow_forward,
-                  ),
-                ),
+                opacity:
+                    _currentIndex != _onboardingData.length - 1 ? 1.0 : 0.0,
               ),
             ],
           ),
