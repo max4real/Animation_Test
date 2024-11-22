@@ -131,21 +131,42 @@ class _OnboardingPageState extends State<OnboardingPage> {
           const Spacer(),
           Row(
             children: [
-              if (_currentIndex > 0)
-                CustomButton(
-                  onPressed: () {
-                    _previousPage();
-                  },
-                  icon: Icons.arrow_back,
+              AnimatedSlide(
+                duration: const Duration(milliseconds: 300),
+                offset: _currentIndex > 0 ? Offset.zero : const Offset(-0.5, 0),
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 300),
+                  opacity: _currentIndex > 0 ? 1.0 : 0.0,
+                  child: CustomButton(
+                    onPressed: () {
+                      if (_currentIndex > 0) {
+                        _previousPage();
+                      }
+                    },
+                    icon: Icons.arrow_back,
+                  ),
                 ),
+              ),
               const Spacer(),
-              if (_currentIndex != _onboardingData.length - 1)
-                CustomButton(
-                  onPressed: () {
-                    _nextPage();
-                  },
-                  icon: Icons.arrow_forward,
+              AnimatedSlide(
+                duration: const Duration(milliseconds: 300),
+                offset: _currentIndex != _onboardingData.length - 1
+                    ? Offset.zero
+                    : const Offset(0.5, 0),
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 300),
+                  opacity:
+                      _currentIndex != _onboardingData.length - 1 ? 1.0 : 0.0,
+                  child: CustomButton(
+                    onPressed: () {
+                      if (_currentIndex != _onboardingData.length - 1) {
+                        _nextPage();
+                      }
+                    },
+                    icon: Icons.arrow_forward,
+                  ),
                 ),
+              ),
             ],
           ),
           // custon indicator 1
