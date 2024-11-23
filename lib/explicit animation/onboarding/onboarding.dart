@@ -57,13 +57,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   void _nextPage() {
     setState(() {
-      _currentIndex++;
+      if (_currentIndex != _onboardingData.length - 1) {
+        _currentIndex++;
+      }
     });
   }
 
   void _previousPage() {
     setState(() {
-      _currentIndex--;
+      if (_currentIndex > 0) {
+        _currentIndex--;
+      }
     });
   }
 
@@ -133,9 +137,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             children: [
               CustomButton(
                 onPressed: () {
-                  if (_currentIndex > 0) {
-                    _previousPage();
-                  }
+                  _previousPage();
                 },
                 icon: Icons.arrow_back,
                 offset: _currentIndex > 0 ? Offset.zero : const Offset(-0.5, 0),
@@ -144,9 +146,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               const Spacer(),
               CustomButton(
                 onPressed: () {
-                  if (_currentIndex != _onboardingData.length - 1) {
-                    _nextPage();
-                  }
+                  _nextPage();
                 },
                 icon: Icons.arrow_forward,
                 offset: _currentIndex != _onboardingData.length - 1
