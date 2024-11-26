@@ -12,6 +12,7 @@ class ScrollHeadPage extends StatefulWidget {
 
 class _ScrollHeadPageState extends State<ScrollHeadPage> {
   final ScrollController _controller = ScrollController();
+  int _currentIndex = 0;
 
   // Heights and sizes
   double _headHeight = 250;
@@ -145,11 +146,16 @@ class _ScrollHeadPageState extends State<ScrollHeadPage> {
                     ),
                     itemCount: _dataList.length,
                     itemBuilder: (context, index) {
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          _dataList[index]["image"],
-                          fit: BoxFit.cover,
+                      return GestureDetector(
+                        onTap: () {
+                          _currentIndex = index;
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.asset(
+                            _dataList[index]["image"],
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       );
                     },
@@ -179,10 +185,11 @@ class _ScrollHeadPageState extends State<ScrollHeadPage> {
           key: const ValueKey("columnLayout"),
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            circularImage(_dataList[2]["image"]),
+            circularImage(ValueKey(_dataList[_currentIndex]["image"]),
+                _dataList[_currentIndex]["image"]),
             const SizedBox(height: 10),
             Text(
-              _dataList[2]["title"],
+              _dataList[_currentIndex]["title"],
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 16,
@@ -190,7 +197,7 @@ class _ScrollHeadPageState extends State<ScrollHeadPage> {
               ),
             ),
             const StarsWidget2(
-              currentStar: 4,
+              currentStar: 3,
               mainAxisAlignment: MainAxisAlignment.center,
             ),
           ],
@@ -225,7 +232,8 @@ class _ScrollHeadPageState extends State<ScrollHeadPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(width: 30),
-              circularImage(_dataList[2]["image"]),
+              circularImage(ValueKey(_dataList[_currentIndex]["image"]),
+                  _dataList[_currentIndex]["image"]),
               const SizedBox(width: 10),
               Expanded(
                 child: Column(
@@ -233,7 +241,7 @@ class _ScrollHeadPageState extends State<ScrollHeadPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _dataList[2]["title"],
+                      _dataList[_currentIndex]["title"],
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -254,7 +262,7 @@ class _ScrollHeadPageState extends State<ScrollHeadPage> {
     );
   }
 
-  Widget circularImage(String image) {
+  Widget circularImage(final Key imageKey, String image) {
     return TweenAnimationBuilder<double>(
       duration: const Duration(milliseconds: 300),
       tween: Tween<double>(
@@ -271,6 +279,25 @@ class _ScrollHeadPageState extends State<ScrollHeadPage> {
             fit: BoxFit.cover,
           ),
         );
+        // return AnimatedSwitcher(
+        //   duration: const Duration(milliseconds: 300),
+        //   transitionBuilder: (child, animation) {
+        //     return ScaleTransition(
+        //       scale: animation,
+        //       child: child,
+        //     );
+        //   },
+        //   child: ClipRRect(
+        //     key: imageKey,
+        //     borderRadius: BorderRadius.circular(size / 2),
+        //     child: Image.asset(
+        //       image,
+        //       width: size,
+        //       height: size,
+        //       fit: BoxFit.cover,
+        //     ),
+        //   ),
+        // );
       },
     );
   }
