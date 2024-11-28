@@ -3,6 +3,8 @@ import 'package:animation_test/explicit%20animation/digit_animation/digit_animat
 import 'package:animation_test/explicit%20animation/dvd/dvd.dart';
 import 'package:animation_test/explicit%20animation/onboarding/onboarding.dart';
 import 'package:animation_test/explicit%20animation/scroll_head/v_scroll_head.dart';
+import 'package:animation_test/explicit%20animation/scroll_head/v_scroll_listener_test.dart';
+import 'package:animation_test/explicit%20animation/scroll_head/v_scroll_listner_test_2.dart';
 import 'package:animation_test/explicit%20animation/test.dart';
 import 'package:animation_test/open_container_animation.dart';
 import 'package:animation_test/implicit%20animation/v_animation.dart';
@@ -172,6 +174,40 @@ void main() {
               },
               child: const Text(
                 'Scroll Head',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Get.to(
+                  () => const ScrollListenerTest(),
+                  transition: Transition.rightToLeft,
+                  duration: const Duration(milliseconds: 100),
+                );
+              },
+              child: const Text(
+                'ScrollListenerTest(Kame)',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Get.to(
+                  () => const ScrollListenerTest2(),
+                  transition: Transition.rightToLeft,
+                  duration: const Duration(milliseconds: 100),
+                );
+              },
+              child: const Text(
+                'ScrollListenerTest2(Kame)',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
